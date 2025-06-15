@@ -1,7 +1,7 @@
 <script setup>
+// 使用 pinia 中的数据
 import { useCategoryStore } from '@/stores/categoryStore'
 const categoryStore = useCategoryStore()
-categoryStore.getCategory()
 
 </script>
 
