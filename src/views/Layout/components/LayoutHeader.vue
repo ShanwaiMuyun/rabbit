@@ -4,20 +4,21 @@
             <h1 class="logo">
                 <RouterLink to="/">小兔鲜</RouterLink>
             </h1>
-
-            <LayoutHeaderUl />
+            <LayoutHeaderUI />
             <div class="search">
                 <i class="iconfont icon-search"></i>
                 <input type="text" placeholder="搜一搜">
             </div>
             <!-- 头部购物车 -->
-            <HeaderCart />
+            <!-- <HeaderCart /> -->
         </div>
     </header>
 </template>
 
 <script setup>
 // import HeaderCart from './HeaderCart.vue';
+import LayoutHeaderUI from './LayoutHeaderUI.vue'
+
 </script>
 
 
