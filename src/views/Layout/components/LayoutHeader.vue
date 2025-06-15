@@ -4,7 +4,7 @@
             <h1 class="logo">
                 <RouterLink to="/">小兔鲜</RouterLink>
             </h1>
-            <LayoutHeaderUI />
+            <LayoutHeaderUl />
             <div class="search">
                 <i class="iconfont icon-search"></i>
                 <input type="text" placeholder="搜一搜">
@@ -17,7 +17,7 @@
 
 <script setup>
 // import HeaderCart from './HeaderCart.vue';
-import LayoutHeaderUI from './LayoutHeaderUI.vue'
+import LayoutHeaderUl from './LayoutHeaderUl.vue'
 
 </script>
 
