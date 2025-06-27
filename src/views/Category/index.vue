@@ -1,5 +1,6 @@
 <script setup>
 import { getCategoryAPI } from '@/apis/category'
+import { getBannerAPI } from '@/apis/home'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -13,6 +14,18 @@ const getCategory = async () => {
 
 onMounted(() => getCategory())
 
+// 获取 banner
+const bannerList = ref([])
+
+const getBanner = async () => {
+    const res = await getBannerAPI({
+        distributionSite: '2'
+    })
+    bannerList.value = res.result
+}
+
+onMounted(() => getBanner())
+
 </script>
 
 <template>
@@ -25,7 +38,14 @@ onMounted(() => getCategory())
                     <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
-
+            <!-- 轮播图 -->
+            <div class="home-banner">
+                <el-carousel height="500px">
+                    <el-carousel-item v-for="item in bannerList" :key="item.id">
+                        <img :src="item.imgUrl" alt="">
+                    </el-carousel-item>
+                </el-carousel>
+            </div>
         </div>
     </div>
 </template>
