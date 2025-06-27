@@ -23,3 +23,11 @@ export function getHotAPI() {
         url: '/home/hot'
     })
 }
+
+// 获取产品列表
+
+export function getGoodsAPI() {
+    return httpInstance({
+        url: '/home/goods'
+    })
+}
