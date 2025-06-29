@@ -22,6 +22,7 @@ const router = createRouter({
           path: 'category/:id',
           component: Category,
         },
+        // Category 和 SubCategory 在 Layout 组件中只能显示其中一个，因此不是放在 category 路由的 children 数组中
         {
           path: 'category/sub/:id',
           component: SubCategory,
