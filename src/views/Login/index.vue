@@ -22,7 +22,7 @@ const rules = {
             validator: (rule, value, callback) => {
                 // 自定义校验逻辑
                 // 勾选就通过 不勾选不通过
-                if (value){
+                if (value) {
                     callback()
                 } else {
                     callback(new Error('请勾选协议'))
@@ -32,6 +32,18 @@ const rules = {
     ]
 }
 
+// 3.获取 form 实例做统一校验
+const formRef = ref(null)
+const doLogin = () => {
+    // 调用实例方法
+    formRef.value.validate((valid) => {
+        // valid: 所有表单都通过校验 才为 true
+        // 以 valid 作为判断条件 如果通过校验才执行登录逻辑
+        if (valid) {
+            // TODO LOGIN
+        }
+    })
+}
 
 </script>
 
@@ -57,7 +69,7 @@ const rules = {
                 </nav>
                 <div class="account-box">
                     <div class="form">
-                        <el-form :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
+                        <el-form ref="formRef" :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
                             <el-form-item prop="account" label="账户">
                                 <el-input v-model="form.account" />
                             </el-form-item>
@@ -69,7 +81,7 @@ const rules = {
                                     我已同意隐私条款和服务条款
                                 </el-checkbox>
                             </el-form-item>
-                            <el-button size="large" class="subBtn">点击登录</el-button>
+                            <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
                         </el-form>
                     </div>
                 </div>
