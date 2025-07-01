@@ -5,7 +5,7 @@
                 <!-- 多模版渲染 区分登录状态和非登录状态 -->
 
                 <!-- 适配思路: 登录时显示第一块 非登录时显示第二块  是否有token -->
-                <template v-if="true">
+                <template v-if="false">
                     <li><a href="javascript:;"><i class=" iconfont icon-user"></i>周杰伦</a>
                     </li>
                     <li>
