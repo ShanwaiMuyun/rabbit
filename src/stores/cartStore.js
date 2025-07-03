@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useUserStore } from './userStore'
-import { ElMessage } from 'element-plus'
 import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart'
 
 export const useCartStore = defineStore('cart', () => {
@@ -18,20 +17,20 @@ export const useCartStore = defineStore('cart', () => {
             await insertCartAPI({ skuId, count })
             updateNewList()
         } else {
-            // 未登录不允许加入购物车
-            ElMessage.warning('请先登录')
-            // // 添加购物车操作
-            // // 已添加过 - count + 1
-            // // 没添加过 - 直接 push
-            // // 思路：通过匹配传递过来的商品对象中的 skuId 能不能在 cartList 中找到，找到了就是添加过
-            // const item = cartList.value.find((item) => goods.skuId === item.skuId)
-            // if (item) {
-            //     // 找到了
-            //     item.count++
-            // } else {
-            //     // 没找到
-            //     cartList.value.push(goods)
-            // }
+            // // 未登录不允许加入购物车
+            // ElMessage.warning('请先登录')
+            // 添加购物车操作
+            // 已添加过 - count + 1
+            // 没添加过 - 直接 push
+            // 思路：通过匹配传递过来的商品对象中的 skuId 能不能在 cartList 中找到，找到了就是添加过
+            const item = cartList.value.find((item) => goods.skuId === item.skuId)
+            if (item) {
+                // 找到了
+                item.count++
+            } else {
+                // 没找到
+                cartList.value.push(goods)
+            }
         }
     }
 
@@ -42,12 +41,12 @@ export const useCartStore = defineStore('cart', () => {
             await delCartAPI([skuId])
             updateNewList()
         } else {
-            // 未登录不允许删除购物车商品
-            ElMessage.warning('请先登录')
-            // // 思路：1.找到要删除项的下标值 - splice
-            // // 2.使用数组的过滤方法 - filter
-            // const idx = cartList.value.findIndex((item) => skuId === item.skuId)
-            // cartList.value.splice(idx, 1)
+            // // 未登录不允许删除购物车商品
+            // ElMessage.warning('请先登录')
+            // 思路：1.找到要删除项的下标值 - splice
+            // 2.使用数组的过滤方法 - filter
+            const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+            cartList.value.splice(idx, 1)
         }
     }
 
