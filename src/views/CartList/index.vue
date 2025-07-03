@@ -54,7 +54,7 @@ const allCheck = (selected) => {
                                 <p>&yen;{{ i.price }}</p>
                             </td>
                             <td class="tc">
-                                <el-input-number v-model="i.count" />
+                                <el-input-number v-model="i.count" :min="1" />
                             </td>
                             <td class="tc">
                                 <p class="f16 red">&yen;{{ (i.price * i.count).toFixed(2) }}</p>
@@ -86,8 +86,8 @@ const allCheck = (selected) => {
             <!-- 操作栏 -->
             <div class="action">
                 <div class="batch">
-                    共 {{ cartStore.allCount }} 件商品，已选择 件，商品合计：
-                    <span class="red">¥ </span>
+                    共 {{ cartStore.allCount }} 件商品，已选择 {{ cartStore.selectedCount }} 件，商品合计：
+                    <span class="red">¥ {{ cartStore.selectedPrice.toFixed(2) }}</span>
                 </div>
                 <div class="total">
                     <el-button size="large" type="primary" @click="$router.push('/checkout')">下单结算</el-button>
