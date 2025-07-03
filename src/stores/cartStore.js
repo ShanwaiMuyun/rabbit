@@ -1,9 +1,9 @@
 // 封装购物车模块
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useUserStore } from './user'
+import { useUserStore } from './userStore'
 import { ElMessage } from 'element-plus'
-import { insertCartAPI, findNewCartListAPI } from '@/apis/cart'
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart'
 
 export const useCartStore = defineStore('cart', () => {
     const userStore = useUserStore()
@@ -16,8 +16,7 @@ export const useCartStore = defineStore('cart', () => {
             // 登录之后的加入购物车逻辑
             const { skuId, count } = goods
             await insertCartAPI({ skuId, count })
-            const res = await findNewCartListAPI()
-            cartList.value = res.result
+            updateNewList()
         } else {
             // 未登录不允许加入购物车
             ElMessage.warning('请先登录')
@@ -36,11 +35,24 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
     // 删除购物车商品
-    const delCart = (skuId) => {
-        // 思路：1.找到要删除项的下标值 - splice
-        // 2.使用数组的过滤方法 - filter
-        const idx = cartList.value.findIndex((item) => skuId === item.skuId)
-        cartList.value.splice(idx, 1)
+    const delCart = async (skuId) => {
+        if (isLogin.value) {
+            // 登录之后的删除购物车商品逻辑
+            await delCartAPI([skuId])
+            updateNewList()
+        } else {
+            // 未登录不允许删除购物车商品
+            ElMessage.warning('请先登录')
+            // // 思路：1.找到要删除项的下标值 - splice
+            // // 2.使用数组的过滤方法 - filter
+            // const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+            // cartList.value.splice(idx, 1)
+        }
+    }
+    // 获取最新购物车列表 action
+    const updateNewList = async () => {
+        const res = await findNewCartListAPI()
+        cartList.value = res.result
     }
     // 单选功能
     const singleCheck = (skuId, selected) => {
