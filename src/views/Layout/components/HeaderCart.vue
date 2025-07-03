@@ -1,6 +1,18 @@
 <script setup>
+import { computed } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
+import { useUserStore } from '@/stores/userStore'
 const cartStore = useCartStore()
+const userStore = useUserStore()
+
+const isLogin = computed(() => userStore.userInfo.token)
+
+if (isLogin.value) {
+    cartStore.updateNewList()
+}
+
+// 获取用户最新的购物车列表
+
 
 </script>
 

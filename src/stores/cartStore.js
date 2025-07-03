@@ -34,6 +34,7 @@ export const useCartStore = defineStore('cart', () => {
             // }
         }
     }
+
     // 删除购物车商品
     const delCart = async (skuId) => {
         if (isLogin.value) {
@@ -49,11 +50,18 @@ export const useCartStore = defineStore('cart', () => {
             // cartList.value.splice(idx, 1)
         }
     }
+
     // 获取最新购物车列表 action
     const updateNewList = async () => {
         const res = await findNewCartListAPI()
         cartList.value = res.result
     }
+
+    // 清除购物车
+    const clearCart = () => {
+        cartList.value = []
+    }
+
     // 单选功能
     const singleCheck = (skuId, selected) => {
         // 通过 skuId 找到要修改的那一项，然后把它的 selected 修改为传过来的 selected
@@ -88,6 +96,8 @@ export const useCartStore = defineStore('cart', () => {
         selectedPrice,
         addCart,
         delCart,
+        clearCart,
+        updateNewList,
         singleCheck,
         allCheck
     }
