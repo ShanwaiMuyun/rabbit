@@ -1,6 +1,17 @@
 <script setup>
+import { getOrderAPI } from '@/apis/pay'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-const payInfo = {}
+const payInfo = ref({})
+const route = useRoute()
+// 获取订单数据
+const getPayInfo = async () => {
+    const res = await getOrderAPI(route.query.id)
+    payInfo.value = res.result
+}
+
+onMounted(() => getPayInfo())
 
 </script>
 
