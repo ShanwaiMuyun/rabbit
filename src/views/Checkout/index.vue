@@ -16,6 +16,20 @@ const getCheckInfo = async () => {
 
 onMounted(() => getCheckInfo())
 
+// 控制弹框打开
+const showDialog = ref(false)
+
+// 切换地址
+const activeAddress = ref({})
+const switchAddress = (item) => {
+    activeAddress.value = item
+}
+// 确认切换地址并关闭弹框
+const confirm = () => {
+    curAddress.value = activeAddress.value
+    showDialog.value = false
+}
+
 </script>
 
 <template>
