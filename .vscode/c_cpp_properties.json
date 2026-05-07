@@ -1,0 +1,20 @@
+{
+  "configurations": [
+    {
+      "name": "windows-gcc-x64",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "D:/zhaojianqiao/Documents/mysql-9.1.0-winx64/mysql-9.1.0-winx64/include",
+        "D:/zhaojianqiao/Documents/cpp-httplib"
+      ],
+      "compilerPath": "F:/Dev-Cpp/TDM-GCC-64/bin/gcc.exe",
+      "cStandard": "${default}",
+      "cppStandard": "${default}",
+      "intelliSenseMode": "windows-gcc-x64",
+      "compilerArgs": [
+        ""
+      ]
+    }
+  ],
+  "version": 4
+}
