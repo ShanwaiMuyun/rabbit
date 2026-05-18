@@ -1,3 +1,4 @@
+-- Active: 1775188308063@@127.0.0.1@3306@ecommerce
 # vue-rabbit
 
 This template should help get you started developing with Vue 3 in Vite.

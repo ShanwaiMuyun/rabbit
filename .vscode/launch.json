@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "e:/software/rabbit-1/code/main/login",
-      "program": "e:/software/rabbit-1/code/main/login/build/Debug/outDebug",
+      "cwd": "e:/software/rabbit-1/code/main/user",
+      "program": "e:/software/rabbit-1/code/main/user/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
