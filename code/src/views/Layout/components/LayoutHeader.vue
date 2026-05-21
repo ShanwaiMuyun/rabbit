@@ -1,28 +1,49 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import HeaderCart from './HeaderCart.vue'
+import LayoutHeaderUl from './LayoutHeaderUl.vue'
+
+const router = useRouter()
+const keyword = ref('')
+
+const doSearch = () => {
+    const value = keyword.value.trim()
+    if (!value) {
+        return
+    }
+
+    router.push({
+        path: '/search',
+        query: {
+            keyword: value
+        }
+    })
+}
+</script>
+
 <template>
-    <header class='app-header'>
+    <header class="app-header">
         <div class="container">
             <h1 class="logo">
-                <RouterLink to="/">小兔鲜</RouterLink>
+                <RouterLink to="/">商城</RouterLink>
             </h1>
             <LayoutHeaderUl />
             <div class="search">
-                <i class="iconfont icon-search"></i>
-                <input type="text" placeholder="搜一搜">
+                <i class="iconfont icon-search" @click="doSearch"></i>
+                <input
+                    v-model="keyword"
+                    type="text"
+                    placeholder="搜索商品"
+                    @keyup.enter="doSearch"
+                >
             </div>
-            <!-- 头部购物车 -->
             <HeaderCart />
         </div>
     </header>
 </template>
 
-<script setup>
-import HeaderCart from './HeaderCart.vue';
-import LayoutHeaderUl from './LayoutHeaderUl.vue'
-
-</script>
-
-
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .app-header {
     background: #fff;
 
@@ -43,9 +64,8 @@ import LayoutHeaderUl from './LayoutHeaderUl.vue'
         }
     }
 
-
     .search {
-        width: 170px;
+        width: 190px;
         height: 32px;
         position: relative;
         border-bottom: 1px solid #e7e7e7;
@@ -54,10 +74,11 @@ import LayoutHeaderUl from './LayoutHeaderUl.vue'
         .icon-search {
             font-size: 18px;
             margin-left: 5px;
+            cursor: pointer;
         }
 
         input {
-            width: 140px;
+            width: 150px;
             padding-left: 5px;
             color: #666;
         }
@@ -65,32 +86,6 @@ import LayoutHeaderUl from './LayoutHeaderUl.vue'
 
     .cart {
         width: 50px;
-
-        .curr {
-            height: 32px;
-            line-height: 32px;
-            text-align: center;
-            position: relative;
-            display: block;
-
-            .icon-cart {
-                font-size: 22px;
-            }
-
-            em {
-                font-style: normal;
-                position: absolute;
-                right: 0;
-                top: 0;
-                padding: 1px 6px;
-                line-height: 1;
-                background: $helpColor;
-                color: #fff;
-                font-size: 12px;
-                border-radius: 10px;
-                font-family: Arial;
-            }
-        }
     }
 }
 </style>

@@ -26,11 +26,12 @@ onMounted(() => getGoods())
                         <span>{{ cate.saleInfo }}</span>
                     </strong>
                 </RouterLink>
-                <ul class="goods-list">
+                <ul class="goods-list" v-if="cate.goods.length">
                     <li v-for="goods in cate.goods" :key="goods.id">
                         <GoodsItem :goods="goods" />
                     </li>
                 </ul>
+                <el-empty v-else description="暂无已审核商品" />
             </div>
         </HomePanel>
     </div>

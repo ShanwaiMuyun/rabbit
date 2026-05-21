@@ -99,6 +99,9 @@ const doLogin = () => {
                                 </el-checkbox>
                             </el-form-item>
                             <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
+                            <div class="register-link">
+                                <RouterLink to="/register">还没有账号？去注册</RouterLink>
+                            </div>
                         </el-form>
                     </div>
                 </div>
@@ -347,5 +350,14 @@ const doLogin = () => {
     background: $xtxColor;
     width: 100%;
     color: #fff;
+}
+
+.register-link {
+    text-align: center;
+    padding-top: 14px;
+
+    a {
+        color: $xtxColor;
+    }
 }
 </style>

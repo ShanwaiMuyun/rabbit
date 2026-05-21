@@ -1,38 +1,58 @@
 import httpInstance from '@/utils/http'
 
-// 获取 banner
+const toGoods = (item) => ({
+    id: item.id,
+    name: item.name,
+    desc: item.description,
+    price: Number(item.price),
+    picture: item.image_url,
+    stock: Number(item.stock),
+    seller: item.seller_username
+})
 
-export function getBannerAPI(params = {}) {
-    // 默认为1，商品为2
-    const { distributionSite = 1 } = params
-    return httpInstance({
-        url: '/home/banner',
-        params: {
-            distributionSite
-        }
+export function getBannerAPI() {
+    return Promise.resolve({
+        result: [{
+            id: 'local-banner',
+            imgUrl: new URL('@/assets/images/login-bg.png', import.meta.url).href
+        }]
     })
 }
 
-// 获取新鲜好物
-
-export function findNewAPI() {
-    return httpInstance({
-        url: '/home/new'
+export async function findNewAPI() {
+    const res = await httpInstance({
+        url: '/products'
     })
+
+    return {
+        result: (res.data || []).slice(0, 4).map(toGoods)
+    }
 }
 
-// 获取人气推荐
-
-export function getHotAPI() {
-    return httpInstance({
-        url: '/home/hot'
+export async function getHotAPI() {
+    const res = await httpInstance({
+        url: '/products'
     })
+
+    return {
+        result: (res.data || []).slice(0, 4).map(toGoods)
+    }
 }
 
-// 获取产品列表
-
-export function getGoodsAPI() {
-    return httpInstance({
-        url: '/home/goods'
+export async function getGoodsAPI() {
+    const res = await httpInstance({
+        url: '/products'
     })
+
+    const goods = (res.data || []).map(toGoods)
+
+    return {
+        result: [{
+            id: 'local-products',
+            name: '在线商品',
+            picture: goods[0]?.picture || '',
+            saleInfo: '已审核商品',
+            goods
+        }]
+    }
 }

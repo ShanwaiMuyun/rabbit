@@ -31,7 +31,8 @@ const countChange = (count) => {
 
 // 添加购物车
 const addCart = () => {
-    if (skuObj.value.skuId) {
+    const skuId = skuObj.value.skuId || goods.value.id
+    if (skuId) {
         // 规格已经选择 触发 action
         cartStore.addCart({
             id: goods.value.id,
@@ -39,8 +40,9 @@ const addCart = () => {
             picture: goods.value.mainPictures[0],
             price: goods.value.price,
             count: count.value,
-            skuId: skuObj.value.skuId,
-            attrsText: skuObj.value.specsText,
+            skuId,
+            seller: goods.value.seller,
+            attrsText: skuObj.value.specsText || '默认规格',
             selected: true
         })
     } else {
