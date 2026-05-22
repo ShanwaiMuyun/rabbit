@@ -7,7 +7,39 @@ const toGoods = (item) => ({
     price: Number(item.price),
     picture: item.image_url,
     stock: Number(item.stock),
-    seller: item.seller_username
+    seller: item.seller_username,
+    category: item.category || 'others'
+})
+
+const categoryOptions = [
+    { id: 'digital', name: '数码电器' },
+    { id: 'fresh-food', name: '食品生鲜' },
+    { id: 'bags', name: '箱包配件' },
+    { id: 'others', name: '其他商品' }
+]
+
+const groupGoods = (goods) => {
+    const groups = categoryOptions.map((option) => {
+        const list = goods.filter((item) => item.category === option.id)
+
+        return {
+            id: option.id,
+            name: option.name,
+            picture: list[0]?.picture || goods[0]?.picture || '',
+            goods: list
+        }
+    })
+
+    return groups.filter((item) => item.goods.length)
+}
+
+const buildLocalCategory = (goods) => ({
+    id: 'online',
+    name: '在线商品',
+    parentId: 'online',
+    parentName: '在线商品',
+    children: groupGoods(goods),
+    goods
 })
 
 export async function getCategoryAPI() {
@@ -18,40 +50,43 @@ export async function getCategoryAPI() {
     const goods = (res.data || []).map(toGoods)
 
     return {
-        result: {
-            id: 'local',
-            name: '在线商品',
-            children: [],
-            goods
-        }
+        result: buildLocalCategory(goods)
     }
 }
 
-export async function getCategoryFilterAPI() {
+export async function getCategoryFilterAPI(categoryId) {
     const res = await httpInstance({
         url: '/products'
     })
 
     const goods = (res.data || []).map(toGoods)
 
+    const category = buildLocalCategory(goods)
+    const current = category.children.find((item) => item.id === categoryId)
+
     return {
-        result: {
-            id: 'local',
-            name: '在线商品',
-            children: [],
-            goods
-        }
+        result: current
+            ? {
+                ...current,
+                parentId: category.id,
+                parentName: category.name
+            }
+            : category
     }
 }
 
-export async function getSubCategoryAPI() {
+export async function getSubCategoryAPI(params = {}) {
     const res = await httpInstance({
         url: '/products'
     })
 
+    const goods = (res.data || []).map(toGoods)
+    const category = buildLocalCategory(goods)
+    const current = category.children.find((item) => item.id === params.categoryId)
+
     return {
         result: {
-            items: (res.data || []).map(toGoods)
+            items: current ? current.goods : goods
         }
     }
 }

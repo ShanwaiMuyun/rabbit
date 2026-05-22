@@ -228,19 +228,26 @@ bool publish_product(const json& body) {
     std::string seller = body_value(body, "seller");
     std::string name = body_value(body, "name");
     std::string description = body_value(body, "description");
+    std::string category = body_value(body, "category", "others");
     std::string image_url = body_value(body, "imageUrl");
     double price = to_double(body_value(body, "price"));
     int stock = to_int(body_value(body, "stock"));
 
-    if (seller.empty() || name.empty() || image_url.empty() || price <= 0 || stock < 0 ||
-        !has_role(seller, "seller")) {
+    if (category != "digital" && category != "fresh-food" && category != "bags" &&
+        category != "others") {
+        category = "others";
+    }
+
+    if (seller.empty() || name.empty() || category.empty() || image_url.empty() || price <= 0 ||
+        stock < 0 || !has_role(seller, "seller")) {
         return false;
     }
 
-    std::string sql = "INSERT INTO products(seller_username,name,description,image_url,price,stock,status) "
+    std::string sql = "INSERT INTO products(seller_username,name,description,category,image_url,price,stock,status) "
                       "VALUES('" + db.escape(seller) + "','" + db.escape(name) + "','" +
-                      db.escape(description) + "','" + db.escape(image_url) + "'," +
-                      std::to_string(price) + "," + std::to_string(stock) + ",'pending')";
+                      db.escape(description) + "','" + db.escape(category) + "','" +
+                      db.escape(image_url) + "'," + std::to_string(price) + "," +
+                      std::to_string(stock) + ",'pending')";
     return db.exec(sql);
 }
 
@@ -254,17 +261,24 @@ bool update_product(const json& body) {
     std::string seller = body_value(body, "seller");
     std::string name = body_value(body, "name");
     std::string description = body_value(body, "description");
+    std::string category = body_value(body, "category", "others");
     std::string image_url = body_value(body, "imageUrl");
     double price = to_double(body_value(body, "price"));
     int stock = to_int(body_value(body, "stock"));
 
-    if (product_id <= 0 || seller.empty() || name.empty() || image_url.empty() ||
+    if (category != "digital" && category != "fresh-food" && category != "bags" &&
+        category != "others") {
+        category = "others";
+    }
+
+    if (product_id <= 0 || seller.empty() || name.empty() || category.empty() || image_url.empty() ||
         price <= 0 || stock < 0 || !has_role(seller, "seller")) {
         return false;
     }
 
     std::string sql = "UPDATE products SET name='" + db.escape(name) +
                       "', description='" + db.escape(description) +
+                      "', category='" + db.escape(category) +
                       "', image_url='" + db.escape(image_url) +
                       "', price=" + std::to_string(price) +
                       ", stock=" + std::to_string(stock) +
@@ -292,7 +306,7 @@ json list_products(const std::string& keyword, bool approved_only) {
         return json::array();
     }
 
-    std::string sql = "SELECT id,seller_username,name,description,image_url,price,stock,status,"
+    std::string sql = "SELECT id,seller_username,name,description,category,image_url,price,stock,status,"
                       "created_at FROM products WHERE 1=1";
     if (approved_only) {
         sql += " AND status='approved'";

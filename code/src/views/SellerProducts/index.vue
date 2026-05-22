@@ -14,9 +14,21 @@ const editingId = ref(null)
 const seller = computed(() => userStore.userInfo?.username || '')
 const canManage = computed(() => userStore.userInfo?.role === 'seller')
 
+const categoryOptions = [
+    { label: '数码电器', value: 'digital' },
+    { label: '食品生鲜', value: 'fresh-food' },
+    { label: '箱包配件', value: 'bags' },
+    { label: '其他商品', value: 'others' }
+]
+
+const getCategoryName = (value) => {
+    return categoryOptions.find((item) => item.value === value)?.label || '其他商品'
+}
+
 const form = ref({
     name: '',
     description: '',
+    category: 'digital',
     imageUrl: '',
     price: 1,
     stock: 1
@@ -24,6 +36,7 @@ const form = ref({
 
 const rules = {
     name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+    category: [{ required: true, message: '请选择商品类别', trigger: 'change' }],
     imageUrl: [{ required: true, message: '请输入商品图片 URL', trigger: 'blur' }],
     price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
     stock: [{ required: true, message: '请输入库存数量', trigger: 'blur' }]
@@ -40,6 +53,7 @@ const resetForm = () => {
     form.value = {
         name: '',
         description: '',
+        category: 'digital',
         imageUrl: '',
         price: 1,
         stock: 1
@@ -70,6 +84,7 @@ const openEdit = (row) => {
     form.value = {
         name: row.name,
         description: row.description,
+        category: row.category || 'others',
         imageUrl: row.image_url,
         price: Number(row.price),
         stock: Number(row.stock)
@@ -143,6 +158,11 @@ onMounted(() => loadProducts())
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" label="商品名称" min-width="160" />
+                    <el-table-column label="类别" width="110">
+                        <template #default="{ row }">
+                            {{ getCategoryName(row.category) }}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="description" label="描述" min-width="220" />
                     <el-table-column prop="price" label="价格" width="100" />
                     <el-table-column prop="stock" label="库存" width="90" />
@@ -175,6 +195,16 @@ onMounted(() => loadProducts())
                 </el-form-item>
                 <el-form-item prop="description" label="商品描述">
                     <el-input v-model="form.description" type="textarea" :rows="3" />
+                </el-form-item>
+                <el-form-item prop="category" label="商品类别">
+                    <el-select v-model="form.category" placeholder="请选择商品类别" style="width: 100%">
+                        <el-option
+                            v-for="item in categoryOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        />
+                    </el-select>
                 </el-form-item>
                 <el-form-item prop="imageUrl" label="图片 URL">
                     <el-input v-model="form.imageUrl" />

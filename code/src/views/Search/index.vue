@@ -15,7 +15,8 @@ const toGoods = (item) => ({
     price: Number(item.price),
     picture: item.image_url,
     stock: Number(item.stock),
-    seller: item.seller_username
+    seller: item.seller_username,
+    category: item.category || 'others'
 })
 
 const loadGoods = async () => {

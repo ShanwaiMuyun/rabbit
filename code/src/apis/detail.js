@@ -6,8 +6,10 @@ const toDetail = (item) => ({
     desc: item.description,
     price: Number(item.price),
     oldPrice: Number(item.price),
+    picture: item.image_url,
     stock: Number(item.stock),
     seller: item.seller_username,
+    category: item.category || 'others',
     mainPictures: [item.image_url],
     salesCount: 0,
     commentCount: 0,
@@ -16,8 +18,8 @@ const toDetail = (item) => ({
         name: item.seller_username
     },
     categories: [
-        { id: 'local', name: '在线商品' },
-        { id: 'local', name: '商城' }
+        { id: 'online-all', name: '全部商品' },
+        { id: 'online', name: '在线商品' }
     ],
     specs: [],
     skus: [{

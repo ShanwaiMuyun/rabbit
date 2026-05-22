@@ -13,6 +13,13 @@ const loading = ref(false)
 const adminName = computed(() => userStore.userInfo?.username || '')
 const isAdmin = computed(() => userStore.userInfo?.role === 'admin')
 
+const categoryMap = {
+    digital: '数码电器',
+    'fresh-food': '食品生鲜',
+    bags: '箱包配件',
+    others: '其他商品'
+}
+
 const loadReviewData = async () => {
     if (!isAdmin.value) {
         return
@@ -107,6 +114,11 @@ onMounted(() => loadReviewData())
                             </template>
                         </el-table-column>
                         <el-table-column prop="name" label="商品名称" />
+                        <el-table-column label="类别" width="110">
+                            <template #default="{ row }">
+                                {{ categoryMap[row.category] || '其他商品' }}
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="seller_username" label="卖家" width="140" />
                         <el-table-column prop="price" label="价格" width="100" />
                         <el-table-column prop="stock" label="库存" width="100" />
